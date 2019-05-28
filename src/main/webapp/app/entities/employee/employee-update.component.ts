@@ -33,8 +33,8 @@ export class EmployeeUpdateComponent implements OnInit {
     hireDate: [],
     salary: [],
     commissionPct: [],
-    department: [],
-    manager: []
+    departmentId: [],
+    managerId: []
   });
 
   constructor(
@@ -77,8 +77,8 @@ export class EmployeeUpdateComponent implements OnInit {
       hireDate: employee.hireDate != null ? employee.hireDate.format(DATE_TIME_FORMAT) : null,
       salary: employee.salary,
       commissionPct: employee.commissionPct,
-      department: employee.department,
-      manager: employee.manager
+      departmentId: employee.departmentId,
+      managerId: employee.managerId
     });
   }
 
@@ -107,8 +107,8 @@ export class EmployeeUpdateComponent implements OnInit {
       hireDate: this.editForm.get(['hireDate']).value != null ? moment(this.editForm.get(['hireDate']).value, DATE_TIME_FORMAT) : undefined,
       salary: this.editForm.get(['salary']).value,
       commissionPct: this.editForm.get(['commissionPct']).value,
-      department: this.editForm.get(['department']).value,
-      manager: this.editForm.get(['manager']).value
+      departmentId: this.editForm.get(['departmentId']).value,
+      managerId: this.editForm.get(['managerId']).value
     };
     return entity;
   }

@@ -37,8 +37,8 @@
             <th jhiSortBy="hireDate"><span jhiTranslate="demoApp.employee.hireDate">Hire Date</span> <fa-icon [icon]="'sort'"></fa-icon></th>
             <th jhiSortBy="salary"><span jhiTranslate="demoApp.employee.salary">Salary</span> <fa-icon [icon]="'sort'"></fa-icon></th>
             <th jhiSortBy="commissionPct"><span jhiTranslate="demoApp.employee.commissionPct">Commission Pct</span> <fa-icon [icon]="'sort'"></fa-icon></th>
-            <th jhiSortBy="department.id"><span jhiTranslate="demoApp.employee.department">Department</span> <fa-icon [icon]="'sort'"></fa-icon></th>
-            <th jhiSortBy="manager.id"><span jhiTranslate="demoApp.employee.manager">Manager</span> <fa-icon [icon]="'sort'"></fa-icon></th>
+            <th jhiSortBy="departmentId"><span jhiTranslate="demoApp.employee.department">Department</span> <fa-icon [icon]="'sort'"></fa-icon></th>
+            <th jhiSortBy="managerId"><span jhiTranslate="demoApp.employee.manager">Manager</span> <fa-icon [icon]="'sort'"></fa-icon></th>
             <th></th>
             </tr>
             </thead>
@@ -53,13 +53,13 @@
                 <td>{{employee.salary}}</td>
                 <td>{{employee.commissionPct}}</td>
                 <td>
-                    <div *ngIf="employee.department">
-                        <a [routerLink]="['../department', employee.department?.id, 'view' ]" >{{employee.department?.id}}</a>
+                    <div *ngIf="employee.departmentId">
+                        <a [routerLink]="['../department', employee.departmentId , 'view' ]" >{{employee.departmentId}}</a>
                     </div>
                 </td>
                 <td>
-                    <div *ngIf="employee.manager">
-                        <a [routerLink]="['../employee', employee.manager?.id, 'view' ]" >{{employee.manager?.id}}</a>
+                    <div *ngIf="employee.managerId">
+                        <a [routerLink]="['../employee', employee.managerId , 'view' ]" >{{employee.managerId}}</a>
                     </div>
                 </td>
                 <td class="text-right">

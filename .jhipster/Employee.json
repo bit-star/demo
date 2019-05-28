@@ -55,7 +55,7 @@
     "changelogDate": "20190524085904",
     "javadoc": "The Employee entity.",
     "entityTableName": "employee",
-    "dto": "no",
+    "dto": "mapstruct",
     "pagination": "infinite-scroll",
     "service": "serviceClass",
     "jpaMetamodelFiltering": false,
