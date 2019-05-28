@@ -5,6 +5,8 @@ import com.lazulite.demo.domain.Employee;
 import com.lazulite.demo.repository.EmployeeRepository;
 import com.lazulite.demo.repository.search.EmployeeSearchRepository;
 import com.lazulite.demo.service.EmployeeService;
+import com.lazulite.demo.service.dto.EmployeeDTO;
+import com.lazulite.demo.service.mapper.EmployeeMapper;
 import com.lazulite.demo.web.rest.errors.ExceptionTranslator;
 
 import org.junit.jupiter.api.BeforeEach;
@@ -65,6 +67,9 @@ public class EmployeeResourceIT {
 
     @Autowired
     private EmployeeRepository employeeRepository;
+
+    @Autowired
+    private EmployeeMapper employeeMapper;
 
     @Autowired
     private EmployeeService employeeService;
@@ -154,9 +159,10 @@ public class EmployeeResourceIT {
         int databaseSizeBeforeCreate = employeeRepository.findAll().size();
 
         // Create the Employee
+        EmployeeDTO employeeDTO = employeeMapper.toDto(employee);
         restEmployeeMockMvc.perform(post("/api/employees")
             .contentType(TestUtil.APPLICATION_JSON_UTF8)
-            .content(TestUtil.convertObjectToJsonBytes(employee)))
+            .content(TestUtil.convertObjectToJsonBytes(employeeDTO)))
             .andExpect(status().isCreated());
 
         // Validate the Employee in the database
@@ -182,11 +188,12 @@ public class EmployeeResourceIT {
 
         // Create the Employee with an existing ID
         employee.setId(1L);
+        EmployeeDTO employeeDTO = employeeMapper.toDto(employee);
 
         // An entity with an existing ID cannot be created, so this API call must fail
         restEmployeeMockMvc.perform(post("/api/employees")
             .contentType(TestUtil.APPLICATION_JSON_UTF8)
-            .content(TestUtil.convertObjectToJsonBytes(employee)))
+            .content(TestUtil.convertObjectToJsonBytes(employeeDTO)))
             .andExpect(status().isBadRequest());
 
         // Validate the Employee in the database
@@ -250,9 +257,7 @@ public class EmployeeResourceIT {
     @Transactional
     public void updateEmployee() throws Exception {
         // Initialize the database
-        employeeService.save(employee);
-        // As the test used the service layer, reset the Elasticsearch mock repository
-        reset(mockEmployeeSearchRepository);
+        employeeRepository.saveAndFlush(employee);
 
         int databaseSizeBeforeUpdate = employeeRepository.findAll().size();
 
@@ -268,10 +273,11 @@ public class EmployeeResourceIT {
             .hireDate(UPDATED_HIRE_DATE)
             .salary(UPDATED_SALARY)
             .commissionPct(UPDATED_COMMISSION_PCT);
+        EmployeeDTO employeeDTO = employeeMapper.toDto(updatedEmployee);
 
         restEmployeeMockMvc.perform(put("/api/employees")
             .contentType(TestUtil.APPLICATION_JSON_UTF8)
-            .content(TestUtil.convertObjectToJsonBytes(updatedEmployee)))
+            .content(TestUtil.convertObjectToJsonBytes(employeeDTO)))
             .andExpect(status().isOk());
 
         // Validate the Employee in the database
@@ -296,11 +302,12 @@ public class EmployeeResourceIT {
         int databaseSizeBeforeUpdate = employeeRepository.findAll().size();
 
         // Create the Employee
+        EmployeeDTO employeeDTO = employeeMapper.toDto(employee);
 
         // If the entity doesn't have an ID, it will throw BadRequestAlertException
         restEmployeeMockMvc.perform(put("/api/employees")
             .contentType(TestUtil.APPLICATION_JSON_UTF8)
-            .content(TestUtil.convertObjectToJsonBytes(employee)))
+            .content(TestUtil.convertObjectToJsonBytes(employeeDTO)))
             .andExpect(status().isBadRequest());
 
         // Validate the Employee in the database
@@ -315,7 +322,7 @@ public class EmployeeResourceIT {
     @Transactional
     public void deleteEmployee() throws Exception {
         // Initialize the database
-        employeeService.save(employee);
+        employeeRepository.saveAndFlush(employee);
 
         int databaseSizeBeforeDelete = employeeRepository.findAll().size();
 
@@ -336,7 +343,7 @@ public class EmployeeResourceIT {
     @Transactional
     public void searchEmployee() throws Exception {
         // Initialize the database
-        employeeService.save(employee);
+        employeeRepository.saveAndFlush(employee);
         when(mockEmployeeSearchRepository.search(queryStringQuery("id:" + employee.getId()), PageRequest.of(0, 20)))
             .thenReturn(new PageImpl<>(Collections.singletonList(employee), PageRequest.of(0, 1), 1));
         // Search the employee
@@ -366,5 +373,28 @@ public class EmployeeResourceIT {
         assertThat(employee1).isNotEqualTo(employee2);
         employee1.setId(null);
         assertThat(employee1).isNotEqualTo(employee2);
+    }
+
+    @Test
+    @Transactional
+    public void dtoEqualsVerifier() throws Exception {
+        TestUtil.equalsVerifier(EmployeeDTO.class);
+        EmployeeDTO employeeDTO1 = new EmployeeDTO();
+        employeeDTO1.setId(1L);
+        EmployeeDTO employeeDTO2 = new EmployeeDTO();
+        assertThat(employeeDTO1).isNotEqualTo(employeeDTO2);
+        employeeDTO2.setId(employeeDTO1.getId());
+        assertThat(employeeDTO1).isEqualTo(employeeDTO2);
+        employeeDTO2.setId(2L);
+        assertThat(employeeDTO1).isNotEqualTo(employeeDTO2);
+        employeeDTO1.setId(null);
+        assertThat(employeeDTO1).isNotEqualTo(employeeDTO2);
+    }
+
+    @Test
+    @Transactional
+    public void testEntityFromId() {
+        assertThat(employeeMapper.fromId(42L).getId()).isEqualTo(42);
+        assertThat(employeeMapper.fromId(null)).isNull();
     }
 }

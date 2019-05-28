@@ -3,6 +3,8 @@ package com.lazulite.demo.service;
 import com.lazulite.demo.domain.Employee;
 import com.lazulite.demo.repository.EmployeeRepository;
 import com.lazulite.demo.repository.search.EmployeeSearchRepository;
+import com.lazulite.demo.service.dto.EmployeeDTO;
+import com.lazulite.demo.service.mapper.EmployeeMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -26,23 +28,28 @@ public class EmployeeService {
 
     private final EmployeeRepository employeeRepository;
 
+    private final EmployeeMapper employeeMapper;
+
     private final EmployeeSearchRepository employeeSearchRepository;
 
-    public EmployeeService(EmployeeRepository employeeRepository, EmployeeSearchRepository employeeSearchRepository) {
+    public EmployeeService(EmployeeRepository employeeRepository, EmployeeMapper employeeMapper, EmployeeSearchRepository employeeSearchRepository) {
         this.employeeRepository = employeeRepository;
+        this.employeeMapper = employeeMapper;
         this.employeeSearchRepository = employeeSearchRepository;
     }
 
     /**
      * Save a employee.
      *
-     * @param employee the entity to save.
+     * @param employeeDTO the entity to save.
      * @return the persisted entity.
      */
-    public Employee save(Employee employee) {
-        log.debug("Request to save Employee : {}", employee);
-        Employee result = employeeRepository.save(employee);
-        employeeSearchRepository.save(result);
+    public EmployeeDTO save(EmployeeDTO employeeDTO) {
+        log.debug("Request to save Employee : {}", employeeDTO);
+        Employee employee = employeeMapper.toEntity(employeeDTO);
+        employee = employeeRepository.save(employee);
+        EmployeeDTO result = employeeMapper.toDto(employee);
+        employeeSearchRepository.save(employee);
         return result;
     }
 
@@ -53,9 +60,10 @@ public class EmployeeService {
      * @return the list of entities.
      */
     @Transactional(readOnly = true)
-    public Page<Employee> findAll(Pageable pageable) {
+    public Page<EmployeeDTO> findAll(Pageable pageable) {
         log.debug("Request to get all Employees");
-        return employeeRepository.findAll(pageable);
+        return employeeRepository.findAll(pageable)
+            .map(employeeMapper::toDto);
     }
 
 
@@ -66,9 +74,10 @@ public class EmployeeService {
      * @return the entity.
      */
     @Transactional(readOnly = true)
-    public Optional<Employee> findOne(Long id) {
+    public Optional<EmployeeDTO> findOne(Long id) {
         log.debug("Request to get Employee : {}", id);
-        return employeeRepository.findById(id);
+        return employeeRepository.findById(id)
+            .map(employeeMapper::toDto);
     }
 
     /**
@@ -90,7 +99,9 @@ public class EmployeeService {
      * @return the list of entities.
      */
     @Transactional(readOnly = true)
-    public Page<Employee> search(String query, Pageable pageable) {
+    public Page<EmployeeDTO> search(String query, Pageable pageable) {
         log.debug("Request to search for a page of Employees for query {}", query);
-        return employeeSearchRepository.search(queryStringQuery(query), pageable);    }
+        return employeeSearchRepository.search(queryStringQuery(query), pageable)
+            .map(employeeMapper::toDto);
+    }
 }
