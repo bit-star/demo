@@ -1,0 +1,34 @@
+
+
+
+entity MpHotspot{
+	name String,
+
+	imageUrl String,
+
+	pathUrl String ,
+
+	addTime Instant,
+
+	orderNum Long,
+  
+	note String
+}
+
+entity FmpSubCompany{
+	moreTodoUrl String
+}
+
+
+
+
+
+relationship OneToMany {
+  FmpSubCompany to MpHotspot
+}
+
+
+service all with serviceClass
+
+// Set an angular suffix
+angularSuffix * with mp
