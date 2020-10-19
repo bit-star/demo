@@ -1,0 +1,56 @@
+<div class="row justify-content-center">
+    <div class="col-8">
+        <div *ngIf="mpHotspot">
+            <h2><span jhiTranslate="demoApp.mpHotspot.detail.title">Mp Hotspot</span> {{ mpHotspot.id }}</h2>
+
+            <hr>
+
+            <jhi-alert-error></jhi-alert-error>
+
+            <dl class="row-md jh-entity-details">
+                <dt><span jhiTranslate="demoApp.mpHotspot.name">Name</span></dt>
+                <dd>
+                    <span>{{ mpHotspot.name }}</span>
+                </dd>
+                <dt><span jhiTranslate="demoApp.mpHotspot.imageUrl">Image Url</span></dt>
+                <dd>
+                    <span>{{ mpHotspot.imageUrl }}</span>
+                </dd>
+                <dt><span jhiTranslate="demoApp.mpHotspot.pathUrl">Path Url</span></dt>
+                <dd>
+                    <span>{{ mpHotspot.pathUrl }}</span>
+                </dd>
+                <dt><span jhiTranslate="demoApp.mpHotspot.addTime">Add Time</span></dt>
+                <dd>
+                    <span>{{ mpHotspot.addTime }}</span>
+                </dd>
+                <dt><span jhiTranslate="demoApp.mpHotspot.orderNum">Order Num</span></dt>
+                <dd>
+                    <span>{{ mpHotspot.orderNum }}</span>
+                </dd>
+                <dt><span jhiTranslate="demoApp.mpHotspot.note">Note</span></dt>
+                <dd>
+                    <span>{{ mpHotspot.note }}</span>
+                </dd>
+                <dt><span jhiTranslate="demoApp.mpHotspot.fmpSubCompany">Fmp Sub Company</span></dt>
+                <dd>
+                    <div *ngIf="mpHotspot.fmpSubCompany">
+                        <a [routerLink]="['/fmp-sub-company-mp', mpHotspot.fmpSubCompany?.id, 'view']">{{ mpHotspot.fmpSubCompany?.id }}</a>
+                    </div>
+                </dd>
+            </dl>
+
+            <button type="submit"
+                    (click)="previousState()"
+                    class="btn btn-info">
+                <fa-icon icon="arrow-left"></fa-icon>&nbsp;<span jhiTranslate="entity.action.back">Back</span>
+            </button>
+
+            <button type="button"
+                    [routerLink]="['/mp-hotspot-mp', mpHotspot.id, 'edit']"
+                    class="btn btn-primary">
+                <fa-icon icon="pencil-alt"></fa-icon>&nbsp;<span jhiTranslate="entity.action.edit">Edit</span>
+            </button>
+        </div>
+    </div>
+</div>

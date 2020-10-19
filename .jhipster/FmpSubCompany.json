@@ -1,0 +1,29 @@
+{
+  "name": "FmpSubCompany",
+  "fields": [
+    {
+      "fieldName": "moreTodoUrl",
+      "fieldType": "String"
+    }
+  ],
+  "relationships": [
+    {
+      "relationshipType": "one-to-many",
+      "otherEntityName": "mpHotspot",
+      "otherEntityRelationshipName": "fmpSubCompany",
+      "relationshipName": "mpHotspot"
+    }
+  ],
+  "changelogDate": "20201019092330",
+  "entityTableName": "fmp_sub_company",
+  "dto": "no",
+  "pagination": "no",
+  "service": "serviceClass",
+  "jpaMetamodelFiltering": false,
+  "fluentMethods": true,
+  "readOnly": false,
+  "embedded": false,
+  "clientRootFolder": "",
+  "applications": "*",
+  "angularJSSuffix": "mp"
+}

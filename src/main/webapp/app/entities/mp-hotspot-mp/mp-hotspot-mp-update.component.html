@@ -1,0 +1,71 @@
+<div class="row justify-content-center">
+    <div class="col-8">
+        <form name="editForm" role="form" novalidate (ngSubmit)="save()" [formGroup]="editForm">
+            <h2 id="jhi-mp-hotspot-mp-heading" jhiTranslate="demoApp.mpHotspot.home.createOrEditLabel">Create or edit a Mp Hotspot</h2>
+
+            <div>
+                <jhi-alert-error></jhi-alert-error>
+
+                <div class="form-group" [hidden]="!editForm.get('id')!.value">
+                    <label for="id" jhiTranslate="global.field.id">ID</label>
+                    <input type="text" class="form-control" id="id" name="id" formControlName="id" readonly />
+                </div>
+
+                <div class="form-group">
+                    <label class="form-control-label" jhiTranslate="demoApp.mpHotspot.name" for="field_name">Name</label>
+                    <input type="text" class="form-control" name="name" id="field_name"
+                           formControlName="name"/>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-control-label" jhiTranslate="demoApp.mpHotspot.imageUrl" for="field_imageUrl">Image Url</label>
+                    <input type="text" class="form-control" name="imageUrl" id="field_imageUrl"
+                           formControlName="imageUrl"/>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-control-label" jhiTranslate="demoApp.mpHotspot.pathUrl" for="field_pathUrl">Path Url</label>
+                    <input type="text" class="form-control" name="pathUrl" id="field_pathUrl"
+                           formControlName="pathUrl"/>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-control-label" jhiTranslate="demoApp.mpHotspot.addTime" for="field_addTime">Add Time</label>
+                    <div class="d-flex">
+                        <input id="field_addTime" type="datetime-local" class="form-control" name="addTime" formControlName="addTime" placeholder="YYYY-MM-DD HH:mm"/>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-control-label" jhiTranslate="demoApp.mpHotspot.orderNum" for="field_orderNum">Order Num</label>
+                    <input type="number" class="form-control" name="orderNum" id="field_orderNum"
+                           formControlName="orderNum"/>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-control-label" jhiTranslate="demoApp.mpHotspot.note" for="field_note">Note</label>
+                    <input type="text" class="form-control" name="note" id="field_note"
+                           formControlName="note"/>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-control-label" jhiTranslate="demoApp.mpHotspot.fmpSubCompany" for="field_fmpSubCompany">Fmp Sub Company</label>
+                    <select class="form-control" id="field_fmpSubCompany" name="fmpSubCompany" formControlName="fmpSubCompany">
+                        <option [ngValue]="null"></option>
+                        <option [ngValue]="fmpSubCompanyOption.id === editForm.get('fmpSubCompany')!.value?.id ? editForm.get('fmpSubCompany')!.value : fmpSubCompanyOption" *ngFor="let fmpSubCompanyOption of fmpsubcompanies; trackBy: trackById">{{ fmpSubCompanyOption.id }}</option>
+                    </select>
+                </div>
+            </div>
+
+            <div>
+                <button type="button" id="cancel-save" class="btn btn-secondary" (click)="previousState()">
+                    <fa-icon icon="ban"></fa-icon>&nbsp;<span jhiTranslate="entity.action.cancel">Cancel</span>
+                </button>
+
+                <button type="submit" id="save-entity" [disabled]="editForm.invalid || isSaving" class="btn btn-primary">
+                    <fa-icon icon="save"></fa-icon>&nbsp;<span jhiTranslate="entity.action.save">Save</span>
+                </button>
+            </div>
+        </form>
+    </div>
+</div>

@@ -55,6 +55,9 @@ public class CacheConfiguration {
             createCache(cm, com.lazulite.demo.domain.Job.class.getName());
             createCache(cm, com.lazulite.demo.domain.Job.class.getName() + ".tasks");
             createCache(cm, com.lazulite.demo.domain.JobHistory.class.getName());
+            createCache(cm, com.lazulite.demo.domain.MpHotspot.class.getName());
+            createCache(cm, com.lazulite.demo.domain.FmpSubCompany.class.getName());
+            createCache(cm, com.lazulite.demo.domain.FmpSubCompany.class.getName() + ".mpHotspots");
             // jhipster-needle-ehcache-add-entry
         };
     }
