@@ -75,6 +75,18 @@
                             <span jhiTranslate="global.menu.entities.jobHistory">Job History</span>
                         </a>
                     </li>
+                    <li>
+                        <a class="dropdown-item" routerLink="mp-hotspot-mp" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }" (click)="collapseNavbar()">
+                            <fa-icon icon="asterisk" [fixedWidth]="true"></fa-icon>
+                            <span jhiTranslate="global.menu.entities.mpHotspotMp">Mp Hotspot Mp</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a class="dropdown-item" routerLink="fmp-sub-company-mp" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }" (click)="collapseNavbar()">
+                            <fa-icon icon="asterisk" [fixedWidth]="true"></fa-icon>
+                            <span jhiTranslate="global.menu.entities.fmpSubCompanyMp">Fmp Sub Company Mp</span>
+                        </a>
+                    </li>
                     <!-- jhipster-needle-add-entity-to-menu - JHipster will add entities to the menu here -->
                 </ul>
             </li>
